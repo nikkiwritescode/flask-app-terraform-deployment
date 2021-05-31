@@ -1,0 +1,9 @@
+variable "app_name" {}
+variable "env_prefix" {}
+variable "instance_type" {}
+variable "avail_zone_1" {}
+variable "avail_zone_2" {}
+variable "subnet_1_id" {}
+variable "subnet_2_id" {}
+variable "security_group_id" {}
+variable "key_pair_name" {}
