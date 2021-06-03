@@ -1,6 +1,7 @@
 variable "app_name" {}
 variable "env_prefix" {}
 variable "instance_type" {}
+variable "instance_profile" {}
 variable "avail_zone_1" {}
 variable "avail_zone_2" {}
 variable "subnet_1_id" {}

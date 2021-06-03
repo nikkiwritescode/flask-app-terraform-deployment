@@ -14,6 +14,7 @@ data "aws_ami" "latest-amazon-linux-image" {
 resource "aws_instance" "app_instance_1" {
   ami           = data.aws_ami.latest-amazon-linux-image.id
   instance_type = var.instance_type
+  iam_instance_profile = var.instance_profile
 
   availability_zone      = var.avail_zone_1
   subnet_id              = var.subnet_1_id
