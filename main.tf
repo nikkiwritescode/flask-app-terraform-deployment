@@ -8,7 +8,7 @@ module "app" {
   env_prefix            = var.env_prefix
   dynamo_table          = module.db.flask_db_table_1
   git_username          = var.git_username
-  git_token             = var.git_token
+  git_token             = module.security.git_personal_access_token.secret_string
   instance_type         = var.instance_type
   instance_profile      = module.security.ec2-instance-profile-flask-dynamo-access.name
   avail_zone_1          = var.avail_zone_1
