@@ -1,19 +1,19 @@
 resource "aws_security_group" "app-sg" {
-  name   = "${var.app_name}-sg"
+  name   = "${var.app_name}-app-sg"
   vpc_id = var.vpc_id
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.my_ip]
+    security_groups = [aws_security_group.elb-sg.id]
   }
 
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 8000
+    to_port     = 8000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.elb-sg.id]
   }
 
   egress {
@@ -25,7 +25,38 @@ resource "aws_security_group" "app-sg" {
   }
 
   tags = {
-    Name = "${var.app_name}-${var.env_prefix}-sg"
+    Name = "${var.app_name}-${var.env_prefix}-app-sg"
+  }
+}
+
+resource "aws_security_group" "elb-sg" {
+  name   = "${var.app_name}-elb-sg"
+  vpc_id = var.vpc_id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.my_ip]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+    prefix_list_ids = []
+  }
+
+  tags = {
+    Name = "${var.app_name}-${var.env_prefix}-elb-sg"
   }
 }
 
@@ -34,10 +65,8 @@ resource "aws_key_pair" "ssh-key" {
   public_key = file(var.my_public_key_location)
 }
 
-resource "aws_iam_role" "dynamo_role_for_ec2" {
-  name = "dynamo_role_for_ec2"
-
-
+resource "aws_iam_role" "dynamo_and_secrets_role_for_ec2" {
+  name = "dynamo_and_secrets_role_for_ec2"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -48,23 +77,22 @@ resource "aws_iam_role" "dynamo_role_for_ec2" {
         Principal = {
             Service = "ec2.amazonaws.com"
         }
-    },
-    ]
+    }]
   })
 
   tags = {
-      tag-key = "dynamo_role_for_ec2"
+      tag-key = "dynamo_and_secrets_role_for_ec2"
   }
 }
 
 resource "aws_iam_instance_profile" "flask_ec2_instance_profile" {
   name = "flask_ec2_instance_profile"
-  role = "${aws_iam_role.dynamo_role_for_ec2.name}"
+  role = aws_iam_role.dynamo_and_secrets_role_for_ec2.name
 }
 
 resource "aws_iam_role_policy" "dynamo_role_for_ec2_policy" {
     name = "dynamo_role_for_ec2_policy"
-    role = "${aws_iam_role.dynamo_role_for_ec2.id}"
+    role = aws_iam_role.dynamo_and_secrets_role_for_ec2.id
 
     policy = jsonencode({
         Version = "2012-10-17"
@@ -100,4 +128,42 @@ resource "aws_iam_role_policy" "dynamo_role_for_ec2_policy" {
         }
         ]
     })
+}
+
+resource "aws_iam_policy" "secrets_policy_for_ec2" {
+  name        = "secrets-policy-for-ec2"
+  description = "Policy which allows the EC2 instances to pull secrets from AWS Secrets Manager."
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+    {
+        Effect = "Allow",
+        Action = [
+            "secretsmanager:GetResourcePolicy",
+            "secretsmanager:GetSecretValue",
+            "secretsmanager:DescribeSecret",
+            "secretsmanager:ListSecretVersionIds",
+            "secretsmanager:ListSecrets"
+        ],
+        Resource = [
+            "${aws_secretsmanager_secret_version.git_access_token.secret_id}"
+        ]
+    },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "secrets_role_attachment" {
+  role       = aws_iam_role.dynamo_and_secrets_role_for_ec2.id
+  policy_arn = aws_iam_policy.secrets_policy_for_ec2.arn
+}
+
+resource "aws_secretsmanager_secret" "git_access_token" {
+  name = "${var.app_name}-${var.env_prefix}-${var.secret_name}"
+}
+
+resource "aws_secretsmanager_secret_version" "git_access_token" {
+  secret_id     = aws_secretsmanager_secret.git_access_token.id
+  secret_string = var.git_token
 }

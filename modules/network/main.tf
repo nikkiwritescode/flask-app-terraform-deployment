@@ -46,6 +46,8 @@ resource "aws_elb" "app-elb" {
   cross_zone_load_balancing = true
   idle_timeout              = 30
 
+  security_groups = [var.elb_security_group_id]
+
   tags = {
     Name = "${var.app_name}-${var.env_prefix}-elb"
   }

@@ -1,6 +1,9 @@
 variable "app_name" {}
 variable "env_prefix" {}
 variable "dynamo_table_name" {}
+variable "git_token" {}
 variable "my_public_key_location" {}
 variable "my_ip" {}
+variable "elb_dns" {}
+variable "secret_name" {}
 variable "vpc_id" {}
