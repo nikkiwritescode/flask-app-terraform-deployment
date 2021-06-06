@@ -1,7 +1,7 @@
 # Terraform Flask Project
 
-## Description
-This is a Terraform deployment for a small Flask app. It runs on port 8000 on the instances themselves but is served on port 80 through the load balancer. The application is pulled from a private repository, so a github account with permissions to access the repository is needed to use this code.
+## About
+This is a Terraform deployment for a small Flask app. It runs on port 8000 on the instances themselves but is served on port 80 through the load balancer. The application is preloaded onto an AMI, so no additional configuration is needed to load it.
 
 ## Configuration
 Clone this repository into a directory of your choice, then create a file in the root of the directory called `terraform.tfvars`. Use the following as a template for this file -- the only required change is to supply your public IP in the `my_ip` field, so you can SSH into your instances:
@@ -41,7 +41,7 @@ vpc_cidr_block     = "10.0.0.0/16"
 ```
 
 ## Deployment
-Once this file has been populated, click Save. Go to your terminal and type `terraform init`. Once completed, type `terraform apply`. Now, you should see a preview of infrastructure to be created. If you like what you see, type yes when prompted to confirm. Once the deployment completes, you should see an output labeled `application_endpoint`. Use this value in the next step to test your API.
+Once this file has been populated, click Save. Open your Terminal to your project folder and type `terraform init`. Once that has completed, type `terraform apply`. Now, you should see a preview of infrastructure to be created. If you like what you see, type `yes` when prompted to confirm. Once the deployment completes, you should see an output labeled `application_endpoint`. Use this value in the next step to test your API.
 
 ## Testing
 You can use [Insomnia](https://insomnia.rest/) to test the resulting Flask app. When you first open Insomnia, you'll see a splash screen that prompts you to "Import an OpenAPI spec to get started." Click Skip, then click Create > New Request Collection. You can name this Collection anything you'd like, but I recommend calling it something like `Flask API Testing.` Click New Request, and name that request anything you would like. The resulting screen should look like this:
@@ -53,20 +53,25 @@ Type the `application_endpoint` that Terraform showed once it completed the `app
 ## Routes
 `[GET] /gtg`
 Simple health check - returns HTTP 200 OK if everything is working and nothing else.
+
 (Example: `app-lb-36342133.us-east-2.elb.amazonaws.com/gtg`)
 
 `[GET] /gtg?details`
 Advanced health check - returns HTTP 200 OK if everything is working along with some service details in JSON format.
+
 (Example: `app-lb-36342133.us-east-2.elb.amazonaws.com/gtg?details`)
 
 `[POST] /candidate/<name>?party=<party>`
 Adds a new string (candidate name) to a list, returns HTTP 200 OK if working, along with data in JSON format. Optional parameter `?party=` will assign to a political party. `empty/unsupplied` or `ind`: none/independent (default); `dem`: democratic; `rep`: republican. This will error if supplied with something other than the these three parameters. 
+
 (Example: `app-lb-36342133.us-east-2.elb.amazonaws.com/candidate/joey?party=dem`)
 
 `[GET] /candidate/<name>`
 Gets candidate name from the list, returns HTTP 200 OK and data in JSON format. 
+
 (Example: `app-lb-36342133.us-east-2.elb.amazonaws.com/candidate/joey`)
 
 `[GET] /candidates`
 Gets list of all candidates from a list, returns HTTP 200 OK and data in JSON format. 
+
 (Example: `app-lb-36342133.us-east-2.elb.amazonaws.com/candidates`)
