@@ -6,13 +6,16 @@ module "app" {
   source                = "./modules/app"
   app_name              = var.app_name
   env_prefix            = var.env_prefix
+  ami_id                = var.ami_id
+  asg_desired_capacity  = var.asg_desired_capacity
+  asg_max_size          = var.asg_max_size
+  asg_min_size          = var.asg_min_size
+  elb_target_group      = module.network.elb_target_group
   instance_type         = var.instance_type
   instance_profile      = module.security.ec2-instance-profile-flask-dynamo-access.name
   internet_gateway      = module.network.gateway
-  avail_zone_1          = var.avail_zone_1
-  avail_zone_2          = var.avail_zone_2
-  subnet_1_id           = module.network.subnet-1.id
-  subnet_2_id           = module.network.subnet-2.id
+  avail_zones           = var.avail_zones
+  subnet_ids            = module.network.subnet_ids
   app_security_group_id = module.security.app-sg.id
   key_pair_name         = module.security.key-pair-name
 }
@@ -22,13 +25,9 @@ module "network" {
   app_name              = var.app_name
   env_prefix            = var.env_prefix
   vpc_cidr_block        = var.vpc_cidr_block
-  subnet_cidr_block_1   = var.subnet_cidr_block_1
-  subnet_cidr_block_2   = var.subnet_cidr_block_2
+  subnet_cidr_blocks    = var.subnet_cidr_blocks
   elb_security_group_id = module.security.elb-sg.id
-  avail_zone_1          = var.avail_zone_1
-  avail_zone_2          = var.avail_zone_2
-  instance_id_1         = module.app.instance-1.id
-  instance_id_2         = module.app.instance-2.id
+  avail_zones           = var.avail_zones
 }
 
 module "security" {

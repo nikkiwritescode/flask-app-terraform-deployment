@@ -4,15 +4,12 @@
 This is a Terraform deployment for a small Flask app. It runs on port 8000 on the instances themselves but is served on port 80 through the load balancer. The application is pulled from a private repository, so a github account with permissions to access the repository is needed to use this code.
 
 ## Configuration
-Clone this repository into a directory of your choice, then create a file in the root of the directory called `terraform.tfvars`. Use the following as a template for this file:
+Clone this repository into a directory of your choice, then create a file in the root of the directory called `terraform.tfvars`. Use the following as a template for this file -- the only required change is to supply your public IP in the `my_ip` field, so you can SSH into your instances:
 
 ```
 #-------------------------#
 # User-Specific Variables #
 #-------------------------#
-git_username           = "github_user_name"
-git_token              = "github_personal_access_token"
-secret_name            = "my_git_token"
 my_ip                  = "1.234.56.78/32"
 my_public_key_location = "~/.ssh/id_rsa.pub"
 
@@ -36,10 +33,6 @@ avail_zone_1  = "us-east-2a"
 avail_zone_2  = "us-east-2b"
 instance_type = "t4g.nano"
 ```
-
-You will need to supply `git_username` along with `git_token` so you can download the Flask app from the private repository it is stored in. You can configure a Personal Access Token for the `git_token` field by following the steps outlined [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) and granting it only the `repo` scope. 
-
-You will also need to supply your public IP in the `my_ip` field.
 
 ## Deployment
 Once this file has been populated, click Save. Go to your terminal and type `terraform init`. Once completed, type `terraform apply`. Now, you should see a preview of infrastructure to be created. If you like what you see, type yes when prompted to confirm. Once the deployment completes, you should see an output labeled `elb_public_dns`. Use this value in the next step to test your API.

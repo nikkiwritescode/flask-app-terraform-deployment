@@ -1,3 +1,7 @@
+###
+### Security Groups and Security Group Rules
+###
+
 resource "aws_security_group" "app-sg" {
   name   = "${var.app_name}-app-sg"
   vpc_id = var.vpc_id
@@ -64,10 +68,18 @@ resource "aws_security_group_rule" "elb-sg-rule" {
   source_security_group_id = aws_security_group.app-sg.id // The group to specify as source
 }
 
+###
+### SSH Key Pair
+###
+
 resource "aws_key_pair" "ssh-key" {
   key_name   = "${var.app_name}-server-key"
   public_key = file(var.my_public_key_location)
 }
+
+###
+### IAM Roles, Policies, and Instance Profiles
+###
 
 resource "aws_iam_role" "dynamo_and_secrets_role_for_ec2" {
   name = "dynamo_and_secrets_role_for_ec2"

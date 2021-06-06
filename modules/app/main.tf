@@ -1,56 +1,54 @@
-data "aws_ami" "latest-amazon-linux-image" {
-  most_recent = true
-  owners      = ["amazon"]
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*-arm64-gp2"]
-  }
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
-resource "aws_instance" "app_instance_1" {
-  ami           = "ami-0f9c27d16302904d1"
-  instance_type = var.instance_type
-  iam_instance_profile = var.instance_profile
-
-  availability_zone      = var.avail_zone_1
-  subnet_id              = var.subnet_1_id
-  vpc_security_group_ids = [var.app_security_group_id]
-
-  key_name = var.key_pair_name
-
-  user_data = data.template_file.init.rendered
-
-  depends_on = [var.internet_gateway]
-
-  tags = {
-    Name = "${var.app_name}-${var.env_prefix}-instance-1"
-  }
-}
-
-resource "aws_instance" "app_instance_2" {
-  ami           = "ami-0f9c27d16302904d1"
-  instance_type = var.instance_type
-  iam_instance_profile = var.instance_profile
-
-  availability_zone      = var.avail_zone_2
-  subnet_id              = var.subnet_2_id
-  vpc_security_group_ids = [var.app_security_group_id]
-
-  key_name = var.key_pair_name
-
-  user_data = data.template_file.init.rendered
-
-  depends_on = [var.internet_gateway]
-
-  tags = {
-    Name = "${var.app_name}-${var.env_prefix}-instance-2"
-  }
-}
-
 data "template_file" "init" {
   template = "${file("./modules/app/ec2-user-data.sh.tpl")}"
+}
+
+resource "aws_placement_group" "front-end" {
+  name     = "${var.app_name}-${var.env_prefix}-front-end-pg"
+  strategy = "spread"
+}
+
+resource "aws_launch_template" "instance_template" {
+  iam_instance_profile {
+    name = var.instance_profile
+  }
+  name = "${var.app_name}-${var.env_prefix}-instance"
+  image_id = var.ami_id
+  instance_type = var.instance_type
+  key_name = var.key_pair_name
+  vpc_security_group_ids = [var.app_security_group_id]
+  user_data = base64encode(data.template_file.init.rendered)
+
+  placement {
+    group_name = aws_placement_group.front-end.name
+  }
+}
+
+resource "aws_autoscaling_group" "app-asg" {
+  desired_capacity    = var.asg_desired_capacity
+  max_size            = var.asg_max_size
+  min_size            = var.asg_min_size
+  vpc_zone_identifier = [var.subnet_ids.0, var.subnet_ids.1, var.subnet_ids.2]
+  target_group_arns   = [var.elb_target_group.arn]
+
+  launch_template {
+    id      = aws_launch_template.instance_template.id
+  }
+
+  tags = [
+    {
+      key                 = "Environment"
+      value               = var.env_prefix
+      propagate_at_launch = true
+    },
+    {
+      key                 = "Project"
+      value               = var.app_name
+      propagate_at_launch = true
+    },
+    {
+      key                 = "Name"
+      value               = "${var.app_name}-${var.env_prefix}-instance"
+      propagate_at_launch = true
+    },
+  ]
 }

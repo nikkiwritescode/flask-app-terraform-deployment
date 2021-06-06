@@ -2,9 +2,5 @@ variable "app_name" {}
 variable "env_prefix" {}
 variable "vpc_cidr_block" {}
 variable "elb_security_group_id" {}
-variable "subnet_cidr_block_1" {}
-variable "subnet_cidr_block_2" {}
-variable "avail_zone_1" {}
-variable "avail_zone_2" {}
-variable "instance_id_1" {}
-variable "instance_id_2" {}
+variable "subnet_cidr_blocks" {}
+variable "avail_zones" {}
