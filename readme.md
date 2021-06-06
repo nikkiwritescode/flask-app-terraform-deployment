@@ -54,24 +54,14 @@ Type the `application_endpoint` that Terraform showed once it completed the `app
 `[GET] /gtg`
 Simple health check - returns HTTP 200 OK if everything is working and nothing else.
 
-(Example: `app-lb-36342133.us-east-2.elb.amazonaws.com/gtg`)
-
 `[GET] /gtg?details`
 Advanced health check - returns HTTP 200 OK if everything is working along with some service details in JSON format.
 
-(Example: `app-lb-36342133.us-east-2.elb.amazonaws.com/gtg?details`)
-
 `[POST] /candidate/<name>?party=<party>`
-Adds a new string (candidate name) to a list, returns HTTP 200 OK if working, along with data in JSON format. Optional parameter `?party=` will assign to a political party. `empty/unsupplied` or `ind`: none/independent (default); `dem`: democratic; `rep`: republican. This will error if supplied with something other than the these three parameters. 
-
-(Example: `app-lb-36342133.us-east-2.elb.amazonaws.com/candidate/joey?party=dem`)
+Adds a new string (candidate name) to a list, returns HTTP 200 OK if working, along with data in JSON format. Optional parameter `?party=` will assign to a political party. `empty/unsupplied` or `ind`: none/independent (default); `dem`: democratic; `rep`: republican. This will error if supplied with something other than the these three parameters.
 
 `[GET] /candidate/<name>`
-Gets candidate name from the list, returns HTTP 200 OK and data in JSON format. 
-
-(Example: `app-lb-36342133.us-east-2.elb.amazonaws.com/candidate/joey`)
+Gets candidate name from the list, returns HTTP 200 OK and data in JSON format.
 
 `[GET] /candidates`
-Gets list of all candidates from a list, returns HTTP 200 OK and data in JSON format. 
-
-(Example: `app-lb-36342133.us-east-2.elb.amazonaws.com/candidates`)
+Gets list of all candidates from a list, returns HTTP 200 OK and data in JSON format.
