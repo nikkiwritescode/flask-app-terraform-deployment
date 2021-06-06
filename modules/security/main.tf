@@ -6,14 +6,7 @@ resource "aws_security_group" "app-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    security_groups = [aws_security_group.elb-sg.id]
-  }
-
-  ingress {
-    from_port   = 8000
-    to_port     = 8000
-    protocol    = "tcp"
-    security_groups = [aws_security_group.elb-sg.id]
+    cidr_blocks = [var.my_ip]
   }
 
   egress {
@@ -29,16 +22,18 @@ resource "aws_security_group" "app-sg" {
   }
 }
 
+resource "aws_security_group_rule" "app-sg-rule" {
+  type              = "ingress"
+  from_port         = 8000
+  to_port           = 8000
+  protocol          = "tcp"
+  security_group_id = aws_security_group.app-sg.id // The group to attach the rule to
+  source_security_group_id = aws_security_group.elb-sg.id // The group to specify as source
+}
+
 resource "aws_security_group" "elb-sg" {
   name   = "${var.app_name}-elb-sg"
   vpc_id = var.vpc_id
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.my_ip]
-  }
 
   ingress {
     from_port   = 80
@@ -58,6 +53,15 @@ resource "aws_security_group" "elb-sg" {
   tags = {
     Name = "${var.app_name}-${var.env_prefix}-elb-sg"
   }
+}
+
+resource "aws_security_group_rule" "elb-sg-rule" {
+  type              = "ingress"
+  from_port         = 8000
+  to_port           = 8000
+  protocol          = "tcp"
+  security_group_id = aws_security_group.elb-sg.id // The group to attach the rule to
+  source_security_group_id = aws_security_group.app-sg.id // The group to specify as source
 }
 
 resource "aws_key_pair" "ssh-key" {

@@ -24,6 +24,8 @@ resource "aws_instance" "app_instance_1" {
 
   user_data = data.template_file.init.rendered
 
+  depends_on = [var.internet_gateway]
+
   tags = {
     Name = "${var.app_name}-${var.env_prefix}-instance-1"
   }
@@ -32,6 +34,7 @@ resource "aws_instance" "app_instance_1" {
 resource "aws_instance" "app_instance_2" {
   ami           = data.aws_ami.latest-amazon-linux-image.id
   instance_type = var.instance_type
+  iam_instance_profile = var.instance_profile
 
   availability_zone      = var.avail_zone_2
   subnet_id              = var.subnet_2_id
@@ -40,6 +43,8 @@ resource "aws_instance" "app_instance_2" {
   key_name = var.key_pair_name
 
   user_data = data.template_file.init.rendered
+
+  depends_on = [var.internet_gateway]
 
   tags = {
     Name = "${var.app_name}-${var.env_prefix}-instance-2"

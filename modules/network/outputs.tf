@@ -11,5 +11,9 @@ output "subnet-2" {
 }
 
 output "elb_public_dns" {
-  value = aws_elb.app-elb.dns_name
+  value = aws_lb.app-lb.dns_name
+}
+
+output "gateway" {
+   value = aws_internet_gateway.app-igw
 }

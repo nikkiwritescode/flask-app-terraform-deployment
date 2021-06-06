@@ -1,18 +1,10 @@
-resource "aws_dynamodb_table" "flask-db-table-1" {
-  name           = "${var.app_name}-${var.env_prefix}-FlaskDB"
-  billing_mode   = "PROVISIONED"
-  read_capacity  = 1
-  write_capacity = 1
-  hash_key       = "Name"
-  range_key      = "Party"
+resource "aws_dynamodb_table" "candidate-table" { #"flask-db-table-1" {
+  name           = "Candidates" #"${var.app_name}-${var.env_prefix}-FlaskDB" i wanna use this name if i can pls
+  billing_mode   = "PAY_PER_REQUEST"
+  hash_key       = "CandidateName"
 
   attribute {
-    name = "Name"
-    type = "S"
-  }
-
-  attribute {
-    name = "Party"
+    name = "CandidateName"
     type = "S"
   }
 

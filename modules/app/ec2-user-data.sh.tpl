@@ -1,14 +1,10 @@
 #!/bin/bash
-sudo yum update -y && sudo yum install -y docker && sudo yum install -y git && sudo yum install -y python37
+sudo yum update -y && yum install -y git
 curl -O https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py --user
-sudo systemctl start docker
-sudo usermod -aG docker ec2-user
 export TC_DYNAMO_TABLE="${dynamo_table}"
 mkdir ~/flask
-git clone https://github.com/uturndata/tech-challenge-flask-app.git ~/flask
-${git_username}
-${git_token}
+git clone https://${git_username}:${git_token}@github.com/uturndata/tech-challenge-flask-app.git ~/flask
 cd ~/flask
-pip install -r requirements.txt
-gunicorn app:candidates_app
+python3 -m pip install -r requirements.txt
+gunicorn -b 0.0.0.0 app:candidates_app -w 4 --log-file ~/flask/gunicorn_logs.log

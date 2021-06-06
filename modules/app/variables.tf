@@ -9,6 +9,7 @@ variable "git_token" {
 }
 variable "instance_type" {}
 variable "instance_profile" {}
+variable "internet_gateway" {}
 variable "avail_zone_1" {}
 variable "avail_zone_2" {}
 variable "subnet_1_id" {}
