@@ -6,9 +6,6 @@ module "app" {
   source                = "./modules/app"
   app_name              = var.app_name
   env_prefix            = var.env_prefix
-  dynamo_table          = module.db.flask_db_table_1
-  git_username          = var.git_username
-  git_token             = module.security.git_personal_access_token.secret_string
   instance_type         = var.instance_type
   instance_profile      = module.security.ec2-instance-profile-flask-dynamo-access.name
   internet_gateway      = module.network.gateway
@@ -40,10 +37,8 @@ module "security" {
   dynamo_table_name      = module.db.flask_db_table_1.name
   env_prefix             = var.env_prefix
   elb_dns                = module.network.elb_public_dns
-  git_token              = var.git_token
   my_ip                  = var.my_ip
   my_public_key_location = var.my_public_key_location
-  secret_name            = var.secret_name
   vpc_id                 = module.network.vpc.id
 }
 

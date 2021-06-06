@@ -12,7 +12,7 @@ data "aws_ami" "latest-amazon-linux-image" {
 }
 
 resource "aws_instance" "app_instance_1" {
-  ami           = data.aws_ami.latest-amazon-linux-image.id
+  ami           = "ami-0f9c27d16302904d1"
   instance_type = var.instance_type
   iam_instance_profile = var.instance_profile
 
@@ -32,7 +32,7 @@ resource "aws_instance" "app_instance_1" {
 }
 
 resource "aws_instance" "app_instance_2" {
-  ami           = data.aws_ami.latest-amazon-linux-image.id
+  ami           = "ami-0f9c27d16302904d1"
   instance_type = var.instance_type
   iam_instance_profile = var.instance_profile
 
@@ -53,10 +53,4 @@ resource "aws_instance" "app_instance_2" {
 
 data "template_file" "init" {
   template = "${file("./modules/app/ec2-user-data.sh.tpl")}"
-
-  vars = {
-    git_username = var.git_username
-    git_token = var.git_token
-    dynamo_table = var.dynamo_table.name
-  }
 }

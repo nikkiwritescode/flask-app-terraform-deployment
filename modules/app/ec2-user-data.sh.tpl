@@ -1,10 +1,23 @@
+Content-Type: multipart/mixed; boundary="//"
+MIME-Version: 1.0
+
+--//
+Content-Type: text/cloud-config; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="cloud-config.txt"
+
+#cloud-config
+cloud_final_modules:
+- [scripts-user, always]
+
+--//
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="userdata.txt"
+
 #!/bin/bash
-sudo yum update -y && yum install -y git
-curl -O https://bootstrap.pypa.io/get-pip.py
-python3 get-pip.py --user
-export TC_DYNAMO_TABLE="${dynamo_table}"
-mkdir ~/flask
-git clone https://${git_username}:${git_token}@github.com/uturndata/tech-challenge-flask-app.git ~/flask
-cd ~/flask
-python3 -m pip install -r requirements.txt
-gunicorn -b 0.0.0.0 app:candidates_app -w 4 --log-file ~/flask/gunicorn_logs.log
+cd ../../srv/flask
+gunicorn -b 0.0.0.0 app:candidates_app -w 4
+--//

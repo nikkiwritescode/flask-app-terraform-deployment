@@ -1,12 +1,5 @@
 variable "app_name" {}
 variable "env_prefix" {}
-variable "dynamo_table" {}
-variable "git_username" {
-    sensitive = true
-}
-variable "git_token" {
-    sensitive = true
-}
 variable "instance_type" {}
 variable "instance_profile" {}
 variable "internet_gateway" {}

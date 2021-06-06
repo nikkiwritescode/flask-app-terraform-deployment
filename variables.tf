@@ -1,8 +1,5 @@
 variable "app_name" {}
 variable "env_prefix" {}
-variable "git_username" { sensitive = true }
-variable "git_token" { sensitive = true }
-variable "secret_name" {}
 variable "avail_zone_1" {}
 variable "avail_zone_2" {}
 variable "instance_type" {}
