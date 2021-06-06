@@ -48,7 +48,7 @@ You can use [Insomnia](https://insomnia.rest/) to test the resulting Flask app. 
 
 ![BlankInsomniaWindow](https://i.imgur.com/pKTZX7F.png)
 
-Type the `application_endpoint` that Terraform showed once it completed the `apply` command into the field in the top-center of the window above the Body/Auth/Query/Header/Docs tabs are. Add `/` followed by the Route you would like to test, as listed below. So for example, your full path may look something like this: `app-lb-36342133.us-east-2.elb.amazonaws.com/gtg?details`. Please note that your application endpoint will different from mine, as that value is unique to your infrastructure. These examples are only given to illustrate the proper format these values should be in.
+Type the `application_endpoint` that Terraform showed once it completed the `apply` command into the field in the top-center of the window above the Body/Auth/Query/Header/Docs tabs are. Add `/` followed by the Route you would like to test, as listed below. So for example, your full path may look something like this: `app-lb-36342133.us-east-2.elb.amazonaws.com/gtg?details`. Please note that your application endpoint will differ from mine, as that value is unique to your infrastructure. These examples are only given to illustrate the proper format these values should be in.
 
 ## Routes
 `[GET] /gtg`
