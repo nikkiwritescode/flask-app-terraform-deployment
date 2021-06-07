@@ -29,9 +29,9 @@ asg_min_size         = 2
 #--------------------------------#
 # Server Configuration Variables #
 #--------------------------------#
-avail_zones   = ["us-east-2a", "us-east-2b", "us-east-2c"]
-ami_id        = "ami-0f9c27d16302904d1"
-instance_type = "t4g.nano"
+availability_zones   = ["us-east-2a", "us-east-2b", "us-east-2c"]
+ami_id               = "ami-0f9c27d16302904d1"
+instance_type        = "t4g.nano"
 
 #---------------------------------#
 # Network Configuration Variables #
