@@ -24,9 +24,13 @@ module "network" {
   app_name              = var.app_name
   env_prefix            = var.env_prefix
   vpc_cidr_block        = var.vpc_cidr_block
-  subnet_cidr_blocks    = var.subnet_cidr_blocks != "empty" ? var.subnet_cidr_blocks : "[${var.subnet_cidr_block_1}, ${var.subnet_cidr_block_2}, ${var.subnet_cidr_block_3}]"
+  subnet_cidr_block_1   = var.subnet_cidr_block_1
+  subnet_cidr_block_2   = var.subnet_cidr_block_2
+  subnet_cidr_block_3   = var.subnet_cidr_block_3
   elb_security_group_id = module.security.elb-sg.id
-  availability_zones    = var.avail_zones != "empty" ? var.avail_zones : "[${var.avail_zone_1}, ${var.avail_zone_2}, ${var.avail_zone_3}]"
+  availability_zone_1   = var.avail_zone_1
+  availability_zone_2   = var.avail_zone_2
+  availability_zone_3   = var.avail_zone_3
 }
 
 module "security" {
