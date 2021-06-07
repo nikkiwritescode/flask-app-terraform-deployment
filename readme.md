@@ -7,7 +7,7 @@
 This is a Terraform deployment for a small Flask app. It runs on port 8000 on the instances themselves but is served on port 80 through the load balancer. The application is preloaded onto an AMI, so no additional configuration is needed to load it.
 
 ## Configuration
-Clone this repository into a directory of your choice, then create a file in the root of the directory called `terraform.tfvars`. Use the following as a template for this file -- the only required change is to supply your public IP in the `my_ip` field, so you can SSH into your instances:
+Clone this repository into a directory of your choice, then create a file in the root of the directory called **terraform.tfvars**. Use the following as a template for this file -- no changes should be required, but you are welcome to change anything as you see fit. *(Please note, though, that the higher you set desired capacity, the more expensive your infrastructure will be to run!)*
 
 ```
 #-------------------------------#
@@ -40,8 +40,16 @@ subnet_cidr_block_2 = "10.0.20.0/24"
 subnet_cidr_block_3 = "10.0.30.0/24"
 vpc_cidr_block      = "10.0.0.0/16"
 ```
+## CI/CD with Travis CI
+This project comes equipped with a **.travis.yml** file, which allows it to plug into a Travis CI pipeline with minimal effort. To set this up, ensure your Travis CI account is linked with your GitHub account and can read the repository with the code. Once you are able to see your repository in Travis CI, click the Settings button to the right of it, then click the Settings tab and scroll down to the Environment Variables. You will need to enter credentials for an AWS user that has, at a minimum, permissions to create, modify, and destroy VPCs, subnets, route tables, instances, and autoscaling groups. It will also need read permission to your Terraform State bucket. These environment variables will need to be the user's `AWS_ACCESS_KEY_ID` AND `AWS_SECRET_ACCESS_KEY`.
 
-## Deployment
+Once the Environment Variables have been set, we will need to create an S3 bucket to store our Terraform state file. This state file handles the current state of the infrastructure -- whether it is built, or destroyed, or in some halfway state of existence. By having this file in an S3 bucket, we can ensure that no matter where our Terraform commands are being run, we will read and update the same state. Create this bucket in the same region as the application: `us-east-2` is the default region for this deployment. You can name this bucket anything you would like, but remember the name as we will need to plug it into our program in a moment. I recommend that you block all public access to this bucket and enable versioning on files inside the bucket. However, enabling versioning will increase the cost and thus the number of files in the bucket. So if you enable versioning, I highly recommend that you also enable an [S3 lifecycle rule](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html) to remove the old versions of the file after a specified time period -- for example, six months.
+
+When this has been sorted, it is time to plug the information into our app. At the top of **main.tf** in the root of this project, enter your Bucket name from above. This will complete your configuration for Travis CI; now, when a Pull Request is created, `terraform init` and `terraform plan` are run. And when that Pull Request is merged into the main branch, `terraform apply` will be run as well. (Please note that direct commits to the `main` branch will also cause `terraform apply` to be run. If you do not want this behavior, it can be removed from the .travis.yml file easily.) For each build in Travis CI, a log is created that, at the very bottom, will have your `application_endpoint`. When the build has successfully completed, find and remember this endpoint for use in the [Testing](#testing) module below.
+
+Because the state file is stored in S3, you can run `terraform apply`, `terraform destroy`, or any other state-changing command locally and Terraform will know how to lead your infrastructure to your desired state.
+
+## Manual Deployment
 Once this file has been populated, click Save. Open your Terminal to your project folder and type `terraform init`. Once that has completed, type `terraform apply`. Now, you should see a preview of infrastructure to be created. If you like what you see, type `yes` when prompted to confirm. Once the deployment completes, you should see an output labeled `application_endpoint`. Use this value in the next step to test your API.
 
 ## Testing
@@ -66,3 +74,6 @@ Gets candidate name from the list, returns HTTP 200 OK and data in JSON format.
 
 `[GET] /candidates`
 Gets list of all candidates from a list, returns HTTP 200 OK and data in JSON format.
+
+## Destroying
+When you are finished, go back to your terminal and type `terraform destroy` to tear all of the infrastructure back down. This will ensure that your costs to run the environment will be minimal.
