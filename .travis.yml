@@ -31,7 +31,9 @@ env:
   global:
     - TF_VAR_app_name=demo_flask_app
     - TF_VAR_env_prefix=dev
-    - TF_VAR_availability_zones="us-east-2a", "us-east-2b", "us-east-2c"
+    - TF_VAR_availability_zones="us-east-2a"
+    - TF_VAR_availability_zones="us-east-2b"
+    - TF_VAR_availability_zones="us-east-2c"
     - TF_VAR_asg_desired_capacity=2
     - TF_VAR_asg_max_size=2
     - TF_VAR_asg_min_size=2
