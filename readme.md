@@ -86,5 +86,5 @@ Gets candidate name from the list, returns HTTP 200 OK and data in JSON format.
 `[GET] /candidates`
 Gets list of all candidates from a list, returns HTTP 200 OK and data in JSON format.
 
-## Tearing down the infrastructure
+## Tearing the infrastructure down
 When you are finished, go back to your terminal and type `terraform destroy` to tear all of the infrastructure back down. Doing so will ensure that your costs to run the environment will be minimal.
