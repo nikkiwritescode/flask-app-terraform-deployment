@@ -63,7 +63,7 @@ vpc_cidr_block      = "10.0.0.0/16"
 
 Once this file has been populated, click **Save**. Open your Terminal to your project folder and type `terraform init`. Once that has completed, type `terraform apply`. Now, you should see a preview of infrastructure to be created. If you like what you see, type `yes` when prompted to confirm. Once the deployment completes, you should see an output labeled `application_endpoint`. Use this value in the next step to test your API.
 
-## Testing
+## Testing the Flask API
 You can use [Insomnia](https://insomnia.rest/) to test the resulting Flask app. When you first open Insomnia, you'll see a splash screen that prompts you to "Import an OpenAPI spec to get started." Click **Skip**, then click **Create > New Request Collection**. You can name this Collection anything you'd like, but I recommend calling it something like `Flask API Testing.` Click **New Request**, and name that request anything you would like. The resulting screen should look like this:
 
 ![BlankInsomniaWindow](https://i.imgur.com/pKTZX7F.png)
@@ -77,8 +77,8 @@ Simple health check - returns HTTP 200 OK if everything is working and nothing e
 `[GET] /gtg?details`
 Advanced health check - returns HTTP 200 OK if everything is working along with some service details in JSON format.
 
-`[POST] /candidate/<name>?party=<party>`
-Adds a new string (candidate name) to a list, returns HTTP 200 OK if working, along with data in JSON format. Optional parameter `?party=` will assign to a political party. `empty/unsupplied` or `ind`: none/independent (default); `dem`: democratic; `rep`: republican. This will error if supplied with something other than the these three parameters.
+`[POST] /candidate/<name>`
+Adds a new string (candidate name) to a list, returns HTTP 200 OK if working, along with data in JSON format.
 
 `[GET] /candidate/<name>`
 Gets candidate name from the list, returns HTTP 200 OK and data in JSON format.
@@ -86,5 +86,5 @@ Gets candidate name from the list, returns HTTP 200 OK and data in JSON format.
 `[GET] /candidates`
 Gets list of all candidates from a list, returns HTTP 200 OK and data in JSON format.
 
-## Destroying
-When you are finished, go back to your terminal and type `terraform destroy` to tear all of the infrastructure back down. This will ensure that your costs to run the environment will be minimal.
+## Tearing down the infrastructure
+When you are finished, go back to your terminal and type `terraform destroy` to tear all of the infrastructure back down. Doing so will ensure that your costs to run the environment will be minimal.

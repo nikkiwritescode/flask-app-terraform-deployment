@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "candidate-table" { #"flask-db-table-1" {
-  name           = "Candidates" #"${var.app_name}-${var.env_prefix}-FlaskDB" i wanna use this name if i can pls
+  name           = "Candidates"
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "CandidateName"
 
