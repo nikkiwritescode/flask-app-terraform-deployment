@@ -31,11 +31,11 @@ env:
   global:
     - TF_VAR_app_name=demo_flask_app
     - TF_VAR_env_prefix=dev
-    - TF_VAR_availability_zones="us-east-2a","us-east-2b","us-east-2c"
+    - TF_VAR_availability_zones="['us-east-2a','us-east-2b','us-east-2c']"
     - TF_VAR_asg_desired_capacity=2
     - TF_VAR_asg_max_size=2
     - TF_VAR_asg_min_size=2
     - TF_VAR_instance_type="t4g.nano"
     - TF_VAR_ami_id="ami-0f9c27d16302904d1"
-    - TF_VAR_subnet_cidr_blocks="10.0.10.0/24","10.0.20.0/24","10.0.30.0/24"
+    - TF_VAR_subnet_cidr_blocks="['10.0.10.0/24','10.0.20.0/24','10.0.30.0/24']"
     - TF_VAR_vpc_cidr_block=10.0.0.0/16
