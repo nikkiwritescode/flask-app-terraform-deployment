@@ -6,13 +6,6 @@ resource "aws_security_group" "app-sg" {
   name   = "${var.app_name}-app-sg"
   vpc_id = var.vpc_id
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [var.my_ip]
-  }
-
   egress {
     from_port       = 0
     to_port         = 0
@@ -64,8 +57,8 @@ resource "aws_security_group_rule" "elb-sg-rule" {
   from_port         = 8000
   to_port           = 8000
   protocol          = "tcp"
-  security_group_id = aws_security_group.elb-sg.id // The group to attach the rule to
-  source_security_group_id = aws_security_group.app-sg.id // The group to specify as source
+  security_group_id = aws_security_group.elb-sg.id
+  source_security_group_id = aws_security_group.app-sg.id
 }
 
 ###

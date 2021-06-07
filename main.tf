@@ -47,7 +47,6 @@ module "security" {
   dynamo_table_name = module.db.flask_db_table_1.name
   env_prefix        = var.env_prefix
   elb_dns           = module.network.elb_public_dns
-  my_ip             = var.my_ip
   vpc_id            = module.network.vpc.id
 }
 

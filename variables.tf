@@ -8,7 +8,6 @@ variable "asg_max_size" {}
 variable "asg_min_size" {}
 variable "instance_type" {}
 variable "ami_id" {}
-variable "my_ip" {}
 variable "subnet_cidr_block_1" {}
 variable "subnet_cidr_block_2" {}
 variable "subnet_cidr_block_3" {}
