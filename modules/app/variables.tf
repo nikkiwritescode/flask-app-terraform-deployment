@@ -7,7 +7,6 @@ variable "asg_max_size" {}
 variable "asg_min_size" {}
 variable "instance_type" {}
 variable "internet_gateway" {}
-variable "avail_zones" {}
 variable "subnet_ids" {}
 variable "app_security_group_id" {}
 variable "elb_target_group" {}

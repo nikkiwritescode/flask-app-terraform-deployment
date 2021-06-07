@@ -16,13 +16,13 @@ jobs:
         - terraform plan -var-file env_vars/dev.tfvars -out build.plan
 
     - stage: terraform apply # Merge our PR - Deploy it!
-      if: type IN (push) and branch = master
+      if: type IN (push) and branch = main
       script:
         - terraform init -backend-config backend_config/dev.tfvars
         - terraform plan -var-file env_vars/dev.tfvars -out build.plan
         - terraform apply build.plan
 
-# Filter to only run this pipeline when it involves actions against the master branch
+# Filter to only run this pipeline when it involves actions against the main branch
 branches:
   only:
-    - master
+    - main

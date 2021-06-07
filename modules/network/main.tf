@@ -72,7 +72,7 @@ resource "aws_vpc" "app-vpc" {
 resource "aws_subnet" "app-subnet-1" {
   vpc_id            = aws_vpc.app-vpc.id
   cidr_block        = var.subnet_cidr_blocks.0
-  availability_zone = var.avail_zones.0
+  availability_zone = var.availability_zones.0
   map_public_ip_on_launch = true
   tags = {
     Name = "${var.app_name}-${var.env_prefix}-subnet-1"
@@ -82,7 +82,7 @@ resource "aws_subnet" "app-subnet-1" {
 resource "aws_subnet" "app-subnet-2" {
   vpc_id            = aws_vpc.app-vpc.id
   cidr_block        = var.subnet_cidr_blocks.1
-  availability_zone = var.avail_zones.1
+  availability_zone = var.availability_zones.1
   map_public_ip_on_launch = true
   tags = {
     Name = "${var.app_name}-${var.env_prefix}-subnet-2"
@@ -92,7 +92,7 @@ resource "aws_subnet" "app-subnet-2" {
 resource "aws_subnet" "app-subnet-3" {
   vpc_id            = aws_vpc.app-vpc.id
   cidr_block        = var.subnet_cidr_blocks.2
-  availability_zone = var.avail_zones.2
+  availability_zone = var.availability_zones.2
   map_public_ip_on_launch = true
   tags = {
     Name = "${var.app_name}-${var.env_prefix}-subnet-3"
