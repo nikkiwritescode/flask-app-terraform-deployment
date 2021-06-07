@@ -1,17 +1,8 @@
 variable "app_name" {}
 variable "env_prefix" {}
-variable "avail_zones" {
-  default = "empty"
-}
-variable "avail_zone_1" {
-  default = "empty"
-}
-variable "avail_zone_2" {
-  default = "empty"
-}
-variable "avail_zone_3" {
-  default = "empty"
-}
+variable "avail_zone_1" {}
+variable "avail_zone_2" {}
+variable "avail_zone_3" {}
 variable "asg_desired_capacity" {}
 variable "asg_max_size" {}
 variable "asg_min_size" {}
@@ -24,16 +15,7 @@ variable "my_public_key_location" {
 variable "my_public_key" {
   default = "empty"
 }
-variable "subnet_cidr_blocks" {
-  default = "empty"
-}
-variable "subnet_cidr_block_1" {
-  default = "empty"
-}
-variable "subnet_cidr_block_2" {
-  default = "empty"
-}
-variable "subnet_cidr_block_3" {
-  default = "empty"
-}
+variable "subnet_cidr_block_1" {}
+variable "subnet_cidr_block_2" {}
+variable "subnet_cidr_block_3" {}
 variable "vpc_cidr_block" {}
