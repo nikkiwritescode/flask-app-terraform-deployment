@@ -1,4 +1,5 @@
 variable "app_name" {}
+variable "build_env" {}
 variable "env_prefix" {}
 variable "avail_zone_1" {}
 variable "avail_zone_2" {}

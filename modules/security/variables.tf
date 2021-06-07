@@ -1,4 +1,5 @@
 variable "app_name" {}
+variable "build_env" {}
 variable "dynamo_table_name" {}
 variable "env_prefix" {}
 variable "elb_dns" {}

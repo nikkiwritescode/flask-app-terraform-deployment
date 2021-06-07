@@ -45,6 +45,7 @@ module "network" {
 module "security" {
   source                 = "./modules/security"
   app_name               = var.app_name
+  build_env              = var.build_env
   dynamo_table_name      = module.db.flask_db_table_1.name
   env_prefix             = var.env_prefix
   elb_dns                = module.network.elb_public_dns

@@ -30,6 +30,7 @@ branches:
 env:
   global:
     - TF_VAR_app_name="demo_flask_app"
+    - TF_VAR_build_env="TravisCI"
     - TF_VAR_env_prefix="dev"
     - TF_VAR_avail_zone_1="us-east-2a"
     - TF_VAR_avail_zone_2="us-east-2b"
