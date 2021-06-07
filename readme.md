@@ -1,18 +1,15 @@
 # Terraform Flask Project
 
 ## About
+
+[![Build Status](https://travis-ci.com/nikkiwritescode/flask-app-terraform-deployment.svg?token=HxJqzgGvydWVotX8yscS&branch=main)](https://travis-ci.com/nikkiwritescode/flask-app-terraform-deployment)
+
 This is a Terraform deployment for a small Flask app. It runs on port 8000 on the instances themselves but is served on port 80 through the load balancer. The application is preloaded onto an AMI, so no additional configuration is needed to load it.
 
 ## Configuration
 Clone this repository into a directory of your choice, then create a file in the root of the directory called `terraform.tfvars`. Use the following as a template for this file -- the only required change is to supply your public IP in the `my_ip` field, so you can SSH into your instances:
 
 ```
-#--------------------------#
-#      User Variables      #
-#--------------------------#
-my_ip                  = "1.234.56.78/32"
-my_public_key_location = "~/.ssh/id_rsa.pub"
-
 #-------------------------------#
 # General Application Variables #
 #-------------------------------#
@@ -29,15 +26,19 @@ asg_min_size         = 2
 #--------------------------------#
 # Server Configuration Variables #
 #--------------------------------#
-availability_zones   = ["us-east-2a", "us-east-2b", "us-east-2c"]
-ami_id               = "ami-0f9c27d16302904d1"
-instance_type        = "t4g.nano"
+avail_zone_1  = "us-east-2a"
+avail_zone_2  = "us-east-2b"
+avail_zone_3  = "us-east-2c"
+ami_id        = "ami-0f9c27d16302904d1"
+instance_type = "t4g.nano"
 
 #---------------------------------#
 # Network Configuration Variables #
 #---------------------------------#
-subnet_cidr_blocks = ["10.0.10.0/24", "10.0.20.0/24", "10.0.30.0/24"]
-vpc_cidr_block     = "10.0.0.0/16"
+subnet_cidr_block_1 = "10.0.10.0/24"
+subnet_cidr_block_2 = "10.0.20.0/24"
+subnet_cidr_block_3 = "10.0.30.0/24"
+vpc_cidr_block      = "10.0.0.0/16"
 ```
 
 ## Deployment
