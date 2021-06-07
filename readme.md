@@ -1,4 +1,4 @@
-# Terraform Flask Project
+# Terraform Deployment Project
 
 ## About
 
