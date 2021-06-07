@@ -1,9 +1,8 @@
 # Terraform Deployment Project
 
-## About
-
 [![Build Status](https://travis-ci.com/nikkiwritescode/flask-app-terraform-deployment.svg?token=HxJqzgGvydWVotX8yscS&branch=main)](https://travis-ci.com/nikkiwritescode/flask-app-terraform-deployment)
 
+## About
 This is a Terraform deployment for a small Flask app. It runs on port 8000 on the instances themselves but is served on port 80 through the load balancer. The application is preloaded onto an AMI, so no additional configuration is needed to load it. It supports up to three subnets and as many instances in a spread placement group across those subnets as you would like. The traffic is load balanced across those instances, and the instances are monitored by the autoscaling group via their health check [route](#routes), which creates a self-healing, highly-available infrastructure.
 
 ## CI/CD with Travis CI
