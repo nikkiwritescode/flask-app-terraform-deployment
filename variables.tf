@@ -1,6 +1,6 @@
 variable "app_name" {}
 variable "env_prefix" {}
-variable "avail_zones" {}
+variable "availability_zones" {}
 variable "asg_desired_capacity" {}
 variable "asg_max_size" {}
 variable "asg_min_size" {}

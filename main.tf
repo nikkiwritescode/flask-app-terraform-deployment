@@ -14,7 +14,7 @@ module "app" {
   instance_type         = var.instance_type
   instance_profile      = module.security.ec2-instance-profile-flask-dynamo-access.name
   internet_gateway      = module.network.gateway
-  avail_zones           = var.avail_zones
+  avail_zones           = var.availability_zones
   subnet_ids            = module.network.subnet_ids
   app_security_group_id = module.security.app-sg.id
   key_pair_name         = module.security.key-pair-name
