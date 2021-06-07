@@ -14,7 +14,6 @@ resource "aws_launch_template" "instance_template" {
   name = "${var.app_name}-${var.env_prefix}-instance"
   image_id = var.ami_id
   instance_type = var.instance_type
-  key_name = var.key_pair_name
   vpc_security_group_ids = [var.app_security_group_id]
   user_data = base64encode(data.template_file.init.rendered)
 

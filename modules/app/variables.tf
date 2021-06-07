@@ -10,4 +10,3 @@ variable "internet_gateway" {}
 variable "subnet_ids" {}
 variable "app_security_group_id" {}
 variable "elb_target_group" {}
-variable "key_pair_name" {}

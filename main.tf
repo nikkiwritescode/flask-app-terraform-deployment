@@ -25,7 +25,6 @@ module "app" {
   internet_gateway      = module.network.gateway
   subnet_ids            = module.network.subnet_ids
   app_security_group_id = module.security.app-sg.id
-  key_pair_name         = module.security.key-pair-name
 }
 
 module "network" {
@@ -43,15 +42,13 @@ module "network" {
 }
 
 module "security" {
-  source                 = "./modules/security"
-  app_name               = var.app_name
-  build_env              = var.build_env
-  dynamo_table_name      = module.db.flask_db_table_1.name
-  env_prefix             = var.env_prefix
-  elb_dns                = module.network.elb_public_dns
-  my_ip                  = var.my_ip
-  my_public_key_location = var.my_public_key_location
-  vpc_id                 = module.network.vpc.id
+  source            = "./modules/security"
+  app_name          = var.app_name
+  dynamo_table_name = module.db.flask_db_table_1.name
+  env_prefix        = var.env_prefix
+  elb_dns           = module.network.elb_public_dns
+  my_ip             = var.my_ip
+  vpc_id            = module.network.vpc.id
 }
 
 module "db" {

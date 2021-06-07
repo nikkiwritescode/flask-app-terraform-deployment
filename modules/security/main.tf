@@ -69,15 +69,6 @@ resource "aws_security_group_rule" "elb-sg-rule" {
 }
 
 ###
-### SSH Key Pair
-###
-
-resource "aws_key_pair" "ssh-key" {
-  key_name   = "${var.app_name}-server-key"
-  public_key = var.build_env == "local" ? file(var.my_public_key_location) : var.my_public_key
-}
-
-###
 ### IAM Roles, Policies, and Instance profiles
 ###
 
