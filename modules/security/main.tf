@@ -74,11 +74,11 @@ resource "aws_security_group_rule" "elb-sg-rule" {
 
 resource "aws_key_pair" "ssh-key" {
   key_name   = "${var.app_name}-server-key"
-  public_key = file(var.my_public_key_location)
+  public_key = fileexists(var.my_public_key_location) ? file(var.my_public_key_location) : var.my_public_key
 }
 
 ###
-### IAM Roles, Policies, and Instance Profiles
+### IAM Roles, Policies, and Instance profiles
 ###
 
 resource "aws_iam_role" "dynamo_and_secrets_role_for_ec2" {
